@@ -18,6 +18,9 @@ This demo aims to show you a comparison between Quarkus and Spring Boot applicat
 
 #### Demo Steps
 
+>***Speaker Note***
+> You can quickly show the code in both projects before starting demo.
+
 1. Go to top level of this directory (`quarkus-introduction`).
 
 2. Build and package both applications.
