@@ -18,29 +18,29 @@ This demo aims to show you a comparison between Quarkus and Spring Boot applicat
 
 #### Demo Steps
 
->***Speaker Note***
+> **_Speaker Note_**
 >
->You can quickly show the code in both projects before starting demo.
+> You can quickly show the code in both projects before starting demo.
 
 1. Go to top level of this directory (`quarkus-introduction`).
 
 2. Build and package both applications.
 
-   *Spring Boot:*
+   _Spring Boot:_
 
    ```sh
    mvn clean install package -DskipTests -f let-me-show-you/spring-demo
    ```
 
-   *Quarkus:*
+   _Quarkus:_
 
    ```sh
-   mvn clean install package -DskipTests -Dquarkus.package.type=legacy-jar -f let-me-show-you/quarkus-demo
+   mvn clean install package -DskipTests -Dquarkus.package.type=uber-jar -f let-me-show-you/quarkus-demo
    ```
 
 3. Compare the application artefacts size in the `target` dicrectory in each project. **Quarkus application should be smaller than Spring Boot**.
 
-   *Spring Boot:*
+   _Spring Boot:_
 
    ```sh
    ls -lh let-me-show-you/spring-demo/target
@@ -49,7 +49,7 @@ This demo aims to show you a comparison between Quarkus and Spring Boot applicat
    ...
    ```
 
-   *Quarkus:*
+   _Quarkus:_
 
    ```sh
    ls -lh let-me-show-you/quarkus-demo/target
@@ -60,13 +60,13 @@ This demo aims to show you a comparison between Quarkus and Spring Boot applicat
 
 4. Run both applications in separate terminal windows.
 
-   *Spring Boot:*
+   _Spring Boot:_
 
    ```sh
    java -jar let-me-show-you/spring-demo/target/spring-demo-0.0.1-SNAPSHOT.jar
    ```
 
-   *Quarkus:*
+   _Quarkus:_
 
    ```sh
    java -jar let-me-show-you/quarkus-demo/target/quarkus-demo-1.0.0-SNAPSHOT-runner.jar
@@ -88,13 +88,15 @@ This demo aims to show you a comparison between Quarkus and Spring Boot applicat
 
 7. Use [jhsdb](https://docs.oracle.com/en/java/javase/11/tools/jhsdb.html) command to get heap information of both applications. Replace the `<PID>` with the process ID from `jps` command output above. Then look at `G1 Heap` section and the `used` attribute (See sample output below.) Then compare the value from both applications. **Quarkus appliation should use less memory than Spring Boot application.**
 
-   *Command:*
+   **_Note._** Building Quarkus applicaiton using [fast-jar](https://quarkus.io/guides/maven-tooling#fast-jar) will cause the application consumes slightly less memory than the legacy jar and uber jar.
+
+   _Command:_
 
    ```sh
    jhsdb jmap --heap --pid <PID>
    ```
 
-   *Sample output:*
+   _Sample output:_
 
    ```sh
    Attaching to process ID 33053, please wait...
