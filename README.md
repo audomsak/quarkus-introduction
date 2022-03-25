@@ -12,15 +12,16 @@
 
 ### 1. Let Me Show You
 
-#### Purpose
+Purpose
 
 This demo aims to show you a comparison between Quarkus and Spring Boot applications how Quarkus is faster, smaller, and more lightweight (low memory consumptions) in JVM running mode.
 
-#### Demo Steps
+<details>
+<summary>Demo Steps</summary>
 
 > **_Speaker Note_**
 >
-> You can quickly show the code in both projects before starting demo.
+> You can quickly show the code of both projects before starting this demo.
 
 1. Go to top level of this directory (`quarkus-introduction`).
 
@@ -149,18 +150,85 @@ This demo aims to show you a comparison between Quarkus and Spring Boot applicat
       0.2898462039908183% used
    ```
 
+[↩ back to top](#1-let-me-show-you)
+</details>
+
 ### 2. CLI Tooling
+
+Purpose
+
+<details>
+<summary>Demo Steps</summary>
+
+[↩ back to top](#2-cli-tooling)
+</details>
 
 ### 3. Dev UI
 
+Purpose
+
+<details>
+<summary>Demo Steps</summary>
+
+[↩ back to top](#3-dev-ui)
+</details>
+
 ### 4. Live Coding
+
+Purpose
+
+<details>
+<summary>Demo Steps</summary>
+
+[↩ back to top](#4-live-coding)
+</details>
 
 ### 5. Dev Services
 
+Purpose
+
+<details>
+<summary>Demo Steps</summary>
+
+[↩ back to top](#5-dev-services)
+</details>
+
 ### 6. Native Executable
+
+Purpose
+
+<details>
+<summary>Demo Steps</summary>
+
+[↩ back to top](#6-native-executable)
+</details>
 
 ### 7. Build Container Image
 
+Purpose
+
+<details>
+<summary>Demo Steps</summary>
+
+[↩ back to top](#7-build-container-image)
+</details>
+
 ### 8. Kubernetes Native
 
+Purpose
+
+<details>
+<summary>Demo Steps</summary>
+
+[↩ back to top](#8-kubernetes-native)
+</details>
+
 ### 9. Spring Boot On Quarkus
+
+Purpose
+
+<details>
+<summary>Demo Steps</summary>
+
+[↩ back to top](#9-spring-boot-on-quarkus)
+</details>
