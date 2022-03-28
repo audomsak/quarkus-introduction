@@ -1,0 +1,11 @@
+
+.vscode
+.factorypath
+.classpath
+.settings
+target
+
+/build/
+/.gradle/
+/.idea/
+**/.DS_Store
