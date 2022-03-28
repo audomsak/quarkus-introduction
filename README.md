@@ -5,15 +5,15 @@ This repository contains demostration guide e.g. scenario, steps and application
 - [Introduction To Quarkus](#introduction-to-quarkus)
   - [Prerequisites](#prerequisites)
   - [Demo Scenarios](#demo-scenarios)
-    - [1. Let Me Show You](#1-let-me-show-you)
-    - [2. CLI Tooling](#2-cli-tooling)
-    - [3. Dev UI](#3-dev-ui)
-    - [4. Live Coding](#4-live-coding)
-    - [5. Dev Services](#5-dev-services)
-    - [6. Native Executable](#6-native-executable)
-    - [7. Build Container Image](#7-build-container-image)
-    - [8. Kubernetes Native](#8-kubernetes-native)
-    - [9. Spring Boot On Quarkus](#9-spring-boot-on-quarkus)
+    - [Let Me Show You](#let-me-show-you)
+    - [CLI Tooling](#cli-tooling)
+    - [Dev UI](#dev-ui)
+    - [Live Coding](#live-coding)
+    - [Dev Services](#dev-services)
+    - [Native Executable](#native-executable)
+    - [Build Container Image](#build-container-image)
+    - [Kubernetes Native](#kubernetes-native)
+    - [Spring Boot On Quarkus](#spring-boot-on-quarkus)
 
 ## Prerequisites
 
@@ -25,7 +25,7 @@ This repository contains demostration guide e.g. scenario, steps and application
 
 ## Demo Scenarios
 
-### 1. Let Me Show You
+### Let Me Show You
 
 Purpose
 
@@ -169,50 +169,72 @@ This demo aims to show you a comparison between Quarkus and Spring Boot applicat
 
 </details>
 
-### 2. CLI Tooling
+### CLI Tooling
 
 Purpose
+
+To demonstrate some cool features of Quarkus CLI tool that helps to improve developers productivity.
 
 <details>
 <summary>Demo Steps</summary>
 
+> **_Speaker Note_**
+>
+> You can mention that the developers don't have to use Quarkus CLI if they don't prefer to. Developers can still use **Maven** or **Gradle** to build their project. For other tasks, they just do whatever they've been doing. Quarkus CLI just a tool that helps develpers to get more convenience.
+
 1. Create a project.
 
    ```sh
-   quarkus create quarkus-demo1
+   quarkus create quarkus-demo
    ```
 
-2. Add dependencies.
+2. Take a look in the project directory, sample code, readme, dockerfile should be created.
+
+3. Add a dependency.
 
    ```sh
-   quarkus extension add kubernetes postgresql
+   quarkus extension add kubernetes
    ```
 
-3. Remove dependencies.
+4. Add a depencency with ambigous name.
 
    ```sh
-   quarkus extension remove quarkus-jdbc-postgresql
+   quarkus extension add hibernate postgresql
    ```
 
-4. Build project.
+5. Then take a look at the POM or Gradle file in the project. There should be new dependencies added.
+
+6. Remove dependencies.
+
+   ```sh
+   quarkus extension remove quarkus-hibernate-orm-panache quarkus-jdbc-postgresql
+   ```
+
+7. Check the POM or Gradle file again, the dependencies should have gone.
+
+8. Build project.
 
    ```sh
    quarkus build
    ```
 
-5. Run project in `dev` (live coding) mode.
+9. Run project in `dev` (live coding) mode. This will also open port `5005` for remote debugging.
 
    ```sh
    quarkus dev
    ```
 
+10. Take a look at the shortcut and menu in the terminal. Then press `W` on keyboard to open the application URL.
+
 [↩ back to top](#2-cli-tooling)
 
 </details>
 
-### 3. Dev UI
+### Dev UI
 
 Purpose
+
+This demo aims to show the **Dev UI** feature which is a dashboard that's available in `dev` mode at `/q/dev` URL by default e.g. [http://localhost:8080/q/dev](http://localhost:8080/q/dev). It allows you to quickly visualize all the extensions currently loaded, see their status and go directly to their documentation.
 
 <details>
 <summary>Demo Steps</summary>
@@ -225,10 +247,15 @@ Purpose
 
 2. Press `D` on keyboard. The **Dev UI** page will be opened automatically in a web browser.
 
-   > **_Speaker Note_**
-   > You can
+   ![image](images/dev-ui-1.png)
 
-3. Add health checks and metrics extension, re run the application and open **Dev UI** again to see the health check widget.
+3. Take a look at the **Configuration** widget, you can edit application properties at run time will reflect to the `application.properties` file without restarting application. Also, the **ArC** widget that has a few menu to view Beans, Observers, Interceptors etc. in the DI container.
+
+   There are also the other widgets for some extensions that you can use to view documents, edit extension specific configurations as well.
+
+4. Usually, microservice application should have the URL to get health status (health checks) and metrics of application for monitoring.
+
+   Add health checks and metrics extension, re run the application and open **Dev UI** again to see the health check widget.
 
    ```sh
    quarkus extension add health
@@ -242,30 +269,48 @@ Purpose
    quarkus extension add quarkus-smallrye-health quarkus-smallrye-metrics
    ```
 
-4. Run the application and open **Dev UI** again to see the health checks widget.
+5. Run the application and open **Dev UI** again to see the health checks widget.
 
-   ![image](/images/dev-ui-1.png)
+   ![image](/images/dev-ui-2.png)
 
-5. Open [http://localhost:8080/q/metrics](http://localhost:8080/q/metrics) to see all metrics exposed by the application.
+6. Open:
+
+   1. [http://localhost:8080/q/health/live](http://localhost:8080/q/health/live) to check liveness.
+   2. [http://localhost:8080/q/health/ready](http://localhost:8080/q/health/ready)to check readiness.
+   3. [http://localhost:8080/q/health/started](http://localhost:8080/q/health/started) to check whether the application is started.
+
+7. Open [http://localhost:8080/q/metrics](http://localhost:8080/q/metrics) to see all metrics exposed by the application.
 
 [↩ back to top](#3-dev-ui)
 
 </details>
 
-### 4. Live Coding
+### Live Coding
 
 Purpose
 
+The intention of this demo is to demonstarte the **Live Coding** feature of Quarkus. This feature helps to reduce times to start/stop application during development work on develper machine. Live Coding allow you to write or edit the code at runtime and the change will reflect immediately without stop and start the application again.
+
 <details>
 <summary>Demo Steps</summary>
+
+1. Start the application in `dev` mode. And open [http://localhost:8080/hello](http://localhost:8080/hello) in a web browser.
+
+   ```sh
+   quarkus dev
+   ```
+
+2. Make some code change i.e. returned message. Then refresh the web browser. The change will reflect immediately without restart the build.
 
 [↩ back to top](#4-live-coding)
 
 </details>
 
-### 5. Dev Services
+### Dev Services
 
 Purpose
+
+The intention of this demo is to show how Quarkus supports the automatic provisioning of unconfigured services in development and test mode which is so called [Dev Services](https://quarkus.io/guides/dev-services).
 
 <details>
 <summary>Demo Steps</summary>
@@ -288,14 +333,14 @@ Purpose
 
 5. Demo the app.
 
-
 [↩ back to top](#5-dev-services)
 
 </details>
 
-### 6. Native Executable
+### Native Executable
 
 Purpose
+
 This demo aims to show one of Quarkus's capabilities - native executable build. Quarkus can build a project with a special mode - `native`, to get an application executable file with native machine code. The advantage is the application will start faster alot than running in JVM mode.
 
 <details>
@@ -329,16 +374,20 @@ This demo aims to show one of Quarkus's capabilities - native executable build. 
 
 </details>
 
-### 7. Build Container Image
+### Build Container Image
 
 Purpose
+
+Usually, microservice application is packaged and deployed with container technology. So, building the container image is one of the tasks that develoepers need to to during develpoment process to test and deploy the application on their machine.
+
+This demo will show you how develpers can easily build various type of container images via **Dev UI** uisng Docker extension.
 
 <details>
 <summary>Demo Steps</summary>
 
->**_Speaker Note_**
+> **_Speaker Note_**
 >
->Mention that usually, developers will build a container image after they've done developement work in local machine to test the application deployment and a few checks before they push the code changes to source control i.e. Git. With Quarkus extensions i.e. Docker they can build the container image via **Dev UI** without writing the `Dockerfile` (it was generated automatically since the projected was created) and using the `docker build...` command.
+> Mention that usually, developers will build a container image after they've done developement work in local machine to test the application deployment and a few checks before they push the code changes to source control i.e. Git. With Quarkus extensions i.e. Docker they can build the container image via **Dev UI** without writing the `Dockerfile` (it was generated automatically since the projected was created) and using the `docker build...` command.
 
 1. Add a Docker extension to the project.
 
@@ -398,16 +447,18 @@ Purpose
 
 </details>
 
-### 8. Kubernetes Native
+### Kubernetes Native
 
 Purpose
+
+To demonstrate the single-step deployments Quarkus makes it easy to deploy microservice applications to Kubernetes without having to understand the intricacies of the underlying Kubernetes framework. Though, this demo is going to deploy an application to OpenShift cluster rather a vanilla Kubernetes cluster.
 
 <details>
 <summary>Demo Steps</summary>
 
 [↩ back to top](#8-kubernetes-native)
 
-1. Remove docker extension.
+1. Remove docker extension from the project.
 
    ```sh
    quarkus extension remove docker
@@ -461,7 +512,7 @@ Purpose
 
 </details>
 
-### 9. Spring Boot On Quarkus
+### Spring Boot On Quarkus
 
 Purpose
 
