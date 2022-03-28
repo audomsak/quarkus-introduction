@@ -1,5 +1,20 @@
 # Introduction To Quarkus
 
+This repository contains demostration guide e.g. scenario, steps and application projects, and other stuff for the **Introduction To Quarkus** presentation.
+
+- [Introduction To Quarkus](#introduction-to-quarkus)
+  - [Prerequisites](#prerequisites)
+  - [Demo Scenarios](#demo-scenarios)
+    - [1. Let Me Show You](#1-let-me-show-you)
+    - [2. CLI Tooling](#2-cli-tooling)
+    - [3. Dev UI](#3-dev-ui)
+    - [4. Live Coding](#4-live-coding)
+    - [5. Dev Services](#5-dev-services)
+    - [6. Native Executable](#6-native-executable)
+    - [7. Build Container Image](#7-build-container-image)
+    - [8. Kubernetes Native](#8-kubernetes-native)
+    - [9. Spring Boot On Quarkus](#9-spring-boot-on-quarkus)
+
 ## Prerequisites
 
 1. Docker
@@ -87,7 +102,7 @@ This demo aims to show you a comparison between Quarkus and Spring Boot applicat
    ...
    ```
 
-7. Use [jhsdb](https://docs.oracle.com/en/java/javase/11/tools/jhsdb.html) command to get heap information of both applications. Replace the `<PID>` with the process ID from `jps` command output above. Then look at `G1 Heap` section and the `used` attribute (See sample output below.) Then compare the value from both applications. **Quarkus appliation should use less memory than Spring Boot application.**
+7. Use [jhsdb](https://docs.oracle.com/en/java/javase/11/tools/jhsdb.html) command to get heap information of both applications. Replace the `<PID>` with the process ID from `jps` command output above. Then look at the `used` attribute in the `G1 Heap` section (See sample output below.) And then compare the values from both applications. **Quarkus appliation should use less memory than Spring Boot application.**
 
    **_Note._** Building Quarkus applicaiton using [fast-jar](https://quarkus.io/guides/maven-tooling#fast-jar) will cause the application consumes slightly less memory than the legacy jar and uber jar.
 
@@ -151,6 +166,7 @@ This demo aims to show you a comparison between Quarkus and Spring Boot applicat
    ```
 
 [↩ back to top](#1-let-me-show-you)
+
 </details>
 
 ### 2. CLI Tooling
@@ -160,7 +176,38 @@ Purpose
 <details>
 <summary>Demo Steps</summary>
 
+1. Create a project.
+
+   ```sh
+   quarkus create quarkus-demo1
+   ```
+
+2. Add dependencies.
+
+   ```sh
+   quarkus extension add kubernetes postgresql
+   ```
+
+3. Remove dependencies.
+
+   ```sh
+   quarkus extension remove quarkus-jdbc-postgresql
+   ```
+
+4. Build project.
+
+   ```sh
+   quarkus build
+   ```
+
+5. Run project in `dev` (live coding) mode.
+
+   ```sh
+   quarkus dev
+   ```
+
 [↩ back to top](#2-cli-tooling)
+
 </details>
 
 ### 3. Dev UI
@@ -170,7 +217,39 @@ Purpose
 <details>
 <summary>Demo Steps</summary>
 
+1. Run a project in `dev` mode.
+
+   ```sh
+   quarkus dev
+   ```
+
+2. Press `D` on keyboard. The **Dev UI** page will be opened automatically in a web browser.
+
+   > **_Speaker Note_**
+   > You can
+
+3. Add health checks and metrics extension, re run the application and open **Dev UI** again to see the health check widget.
+
+   ```sh
+   quarkus extension add health
+   ```
+
+   ```sh
+   quarkus extension add metric
+   ```
+
+   ```sh
+   quarkus extension add quarkus-smallrye-health quarkus-smallrye-metrics
+   ```
+
+4. Run the application and open **Dev UI** again to see the health checks widget.
+
+   ![image](/images/dev-ui-1.png)
+
+5. Open [http://localhost:8080/q/metrics](http://localhost:8080/q/metrics) to see all metrics exposed by the application.
+
 [↩ back to top](#3-dev-ui)
+
 </details>
 
 ### 4. Live Coding
@@ -181,6 +260,7 @@ Purpose
 <summary>Demo Steps</summary>
 
 [↩ back to top](#4-live-coding)
+
 </details>
 
 ### 5. Dev Services
@@ -190,17 +270,63 @@ Purpose
 <details>
 <summary>Demo Steps</summary>
 
+1. Run the **Producer** application in [`dev-services/kafka-quickstart-producer`](dev-services/kafka-quickstart-producer) directory. And wait until the application is un and running. The Kafa dev service should get started automatically.
+
+   ```sh
+   quarkus dev
+   ```
+
+2. Run the **Processor** application in [`dev-services/kafka-quickstart-processor`](dev-services/kafka-quickstart-processor) directory. And wait until the application is un and running.
+
+   ```sh
+   quarkus dev
+   ```
+
+3. Go to the terminal you ran the **Producer** application then press `W` on keyboard to open a web page.
+
+4. Click on the `quote.html` URL.
+
+5. Demo the app.
+
+
 [↩ back to top](#5-dev-services)
+
 </details>
 
 ### 6. Native Executable
 
 Purpose
+This demo aims to show one of Quarkus's capabilities - native executable build. Quarkus can build a project with a special mode - `native`, to get an application executable file with native machine code. The advantage is the application will start faster alot than running in JVM mode.
 
 <details>
 <summary>Demo Steps</summary>
 
+1. Build the project with native paramenter.
+
+   ```sh
+   mvn clean package -DskipTests -Pnative
+   ```
+
+2. Run the application with native executable file in the `target` directory.
+
+   ```sh
+   ./target/demo1-1.0.0-SNAPSHOT-runner
+   ```
+
+3. Observe the superfast startup time in the first line of logs.
+
+   ```txt
+   __  ____  __  _____   ___  __ ____  ______
+   --/ __ \/ / / / _ | / _ \/ //_/ / / / __/
+   -/ /_/ / /_/ / __ |/ , _/ ,< / /_/ /\ \
+   --\___\_\____/_/ |_/_/|_/_/|_|\____/___/
+   2022-03-28 11:31:56,254 INFO  [io.quarkus] (main) demo1 1.0.0-SNAPSHOT native (powered by Quarkus 2.7.5.Final) started in 0.079s. Listening on: http://0.0.0.0:8080
+   2022-03-28 11:31:56,254 INFO  [io.quarkus] (main) Profile prod activated.
+   2022-03-28 11:31:56,254 INFO  [io.quarkus] (main) Installed features: [cdi, jdbc-postgresql, kubernetes, resteasy, smallrye-context-propagation, smallrye-health, smallrye-metrics, vertx]
+   ```
+
 [↩ back to top](#6-native-executable)
+
 </details>
 
 ### 7. Build Container Image
@@ -210,7 +336,66 @@ Purpose
 <details>
 <summary>Demo Steps</summary>
 
+>**_Speaker Note_**
+>
+>Mention that usually, developers will build a container image after they've done developement work in local machine to test the application deployment and a few checks before they push the code changes to source control i.e. Git. With Quarkus extensions i.e. Docker they can build the container image via **Dev UI** without writing the `Dockerfile` (it was generated automatically since the projected was created) and using the `docker build...` command.
+
+1. Add a Docker extension to the project.
+
+   ```sh
+   quarkus extension add docker
+   ```
+
+2. Run the project in **dev** mode.
+
+   ```sh
+   quarkus dev
+   ```
+
+3. Open **Dev UI** dashboard by pressing `D` on keyboard. Then click on **build**.
+
+   ![image](images/build-container-image-1.png)
+
+4. Select the build option and click on **Build** button.
+
+   ![image](images/build-container-image-2.png)
+
+5. Go back to terminal and observe the logs.
+
+   ```txt
+   2022-03-28 11:43:05,769 INFO  [io.qua.con.ima.doc.dep.DockerProcessor] (build-3) Starting (local) container image build for jar using docker.
+   2022-03-28 11:43:05,772 INFO  [io.qua.con.ima.doc.dep.DockerProcessor] (build-3) Executing the following command to build docker image: 'docker build -f /Users/dom/Temp/demo1/src/main/docker/Dockerfile.jvm -t dom/demo1:1.0.0-SNAPSHOT /Users/dom/Temp/demo1'
+   2022-03-28 11:43:07,903 INFO  [io.qua.con.ima.doc.dep.DockerProcessor] (build-3) #1 [internal] load build definition from Dockerfile.jvm
+   2022-03-28 11:43:07,904 INFO  [io.qua.con.ima.doc.dep.DockerProcessor] (build-3) #1 sha256:38382a805c9ca2a3f6c8240eeb3aa21207690c019095351943aa0096388f8a9f
+   2022-03-28 11:43:07,904 INFO  [io.qua.con.ima.doc.dep.DockerProcessor] (build-3) #1 transferring dockerfile: 5.29kB 0.0s done
+   2022-03-28 11:43:07,905 INFO  [io.qua.con.ima.doc.dep.DockerProcessor] (build-3) #1 DONE 0.0s
+   2022-03-28 11:43:07,905 INFO  [io.qua.con.ima.doc.dep.DockerProcessor] (build-3)
+   2022-03-28 11:43:07,905 INFO  [io.qua.con.ima.doc.dep.DockerProcessor] (build-3) #2 [internal] load .dockerignore
+   2022-03-28 11:43:07,906 INFO  [io.qua.con.ima.doc.dep.DockerProcessor] (build-3) #2 sha256:51f59eaa8b92dcfc198959f084cacd96bb7ace28b8636f7fdd5584cdb08827d6
+   2022-03-28 11:43:07,914 INFO  [io.qua.con.ima.doc.dep.DockerProcessor] (build-3) #2 transferring context: 115B done
+   2022-03-28 11:43:07,914 INFO  [io.qua.con.ima.doc.dep.DockerProcessor] (build-3) #2 DONE 0.0s
+   2022-03-28 11:43:07,916 INFO  [io.qua.con.ima.doc.dep.DockerProcessor] (build-3)
+   2022-03-28 11:43:07,916 INFO  [io.qua.con.ima.doc.dep.DockerProcessor] (build-3) #3 [internal] load metadata for registry.access.redhat.com/ubi8/openjdk-11:1.11
+   2022-03-28 11:43:07,917 INFO  [io.qua.con.ima.doc.dep.DockerProcessor] (build-3) #3 sha256:301e98e83faf119c95663e3f5e3f3c2978aef98761cc9e2783115a7c0873eeaa
+   2022-03-28 11:43:11,814 INFO  [io.qua.con.ima.doc.dep.DockerProcessor] (build-3) #3 DONE 3.8s
+   2022-03-28 11:43:11,815 INFO  [io.qua.con.ima.doc.dep.DockerProcessor] (build-3)
+   2022-03-28 11:43:11,815 INFO  [io.qua.con.ima.doc.dep.DockerProcessor] (build-3) #4 [1/5] FROM registry.access.redhat.com/ubi8/openjdk-11:1.11@sha256:6fa59a5318004aef86441ea6765ebed2a43589cd521a15b1d76120a0b3cc484b
+   2022-03-28 11:43:11,816 INFO  [io.qua.con.ima.doc.dep.DockerProcessor] (build-3) #4 sha256:0c7f13ed443735447f3f4189497cffaad3b9c367af8ff8a2a0eb2064bdb561c8
+   2022-03-28 11:43:11,817 INFO  [io.qua.con.ima.doc.dep.DockerProcessor] (build-3) #4 DONE 0.0s
+   .....
+   .....
+   ```
+
+6. Run the container built from the previous step.
+
+   ```sh
+   docker run --rm -i -p 9091:8080 <container image>
+   ```
+
+7. Open [http://localhost:9091](http://localhost:9091) in a web browser.
+
 [↩ back to top](#7-build-container-image)
+
 </details>
 
 ### 8. Kubernetes Native
@@ -221,14 +406,163 @@ Purpose
 <summary>Demo Steps</summary>
 
 [↩ back to top](#8-kubernetes-native)
+
+1. Remove docker extension.
+
+   ```sh
+   quarkus extension remove docker
+   ```
+
+2. Add OpenShift extension to the project.
+
+   ```sh
+   quarkus add openshift
+   ```
+
+3. Login to OpenShift Console, hen create a new project e.g. `test`, and then grab the login command.
+
+4. Go to terminal and execute the login command.
+
+5. Set default project.
+
+   ```sh
+   oc project test
+   ```
+
+6. Build and deploy application on OpenShift
+
+   ```sh
+   quarkus build -Dquarkus.kubernetes.deploy=true \
+   -Dquarkus.kubernetes-client.trust-certs=true \
+   -Dmaven.test.skip=true
+   ```
+
+7. Wait until it finished.
+
+   ```txt
+   [INFO] [io.quarkus.container.image.openshift.deployment.OpenshiftProcessor] Successfully pushed image-registry.openshift-image-registry.svc:5000/test/demo1@sha256:7a4fc2eaa73bd722a79f1c1123b9f1badcbcdb71a983f51ed441d9fb81fc2226
+   [INFO] [io.quarkus.container.image.openshift.deployment.OpenshiftProcessor] Push successful
+   [INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] Deploying to openshift server: https://api.cluster-qx9qw.qx9qw.sandbox1821.opentlc.com:6443/ in namespace: test.
+   [INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] Applied: Service demo1.
+   [INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] Applied: ImageStream demo1.
+   [INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] Applied: ImageStream openjdk-11.
+   [INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] Applied: BuildConfig demo1.
+   [INFO] [io.quarkus.kubernetes.deployment.KubernetesDeployer] Applied: DeploymentConfig demo1.
+   [INFO] [io.quarkus.deployment.QuarkusAugmentor] Quarkus augmentation completed in 206660ms
+   ```
+
+8. Expose a new route for the application.
+
+   ```sh
+   oc expose svc <service name>
+   ```
+
+9. Go to OpenShift Console, **Topology** menu. Then open a application link.
+
 </details>
 
 ### 9. Spring Boot On Quarkus
 
 Purpose
 
+The intention of this demo is to show how to migrate existing Spring Boot applcation to Quarkus without changing any code (though, dependencies and application properties need to be added). The demo is from and uses this [Spring Boot on Quarkus: Magic or madness?](https://developers.redhat.com/blog/2021/02/09/spring-boot-on-quarkus-magic-or-madness) article. Take a look at the article to get better understanding.
+
 <details>
 <summary>Demo Steps</summary>
 
+1. The demo project requires a PostgreSQL database so run it with this Docker command.
+
+   ```sh
+   docker run --ulimit memlock=-1:-1 -it --rm=true --memory-swappiness=0 --name tododb -e POSTGRES_USER=todo -e POSTGRES_PASSWORD=todo -e POSTGRES_DB=tododb -p 5432:5432 postgres:13
+   ```
+
+2. Run the application.
+
+   ```sh
+   ./mvnw clean spring-boot:run
+   ```
+
+   The application should run with Spring Boot framework.
+
+   ```txt
+   10:58:52.816 [Thread-0] DEBUG org.springframework.boot.devtools.restart.classloader.RestartClassLoader - Created RestartClassLoader org.springframework.boot.devtools.restart.classloader.RestartClassLoader@26e6c1ba
+
+   .   ____          _            __ _ _
+   /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+   ( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+   \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+   '  |____| .__|_| |_|_| |_\__, | / / / /
+   =========|_|==============|___/=/_/_/_/
+   :: Spring Boot ::                (v2.6.3)
+
+   2022-03-28 10:58:53.474  INFO 27863 --- [  restartedMain] i.q.todospringquarkus.TodoApplication    : Starting TodoApplication using Java 11.0.13 on asuksunt-mac with PID 27863 (/Users/dom/Repo/todo-spring-quarkus/target/classes started by dom in /Users/dom/Repo/todo-spring-quarkus)
+   2022-03-28 10:58:53.475  INFO 27863 --- [  restartedMain] i.q.todospringquarkus.TodoApplication    : No active profile set, falling back to default profiles: default
+   2022-03-28 10:58:53.561  INFO 27863 --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+   2022-03-28 10:58:53.562  INFO 27863 --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+   2022-03-28 10:58:54.787  INFO 27863 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+   2022-03-28 10:58:54.846  INFO 27863 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 45 ms. Found 1 JPA repository interfaces.
+   2022-03-28 10:58:55.702  INFO 27863 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+   2022-03-28 10:58:55.715  INFO 27863 --- [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+   2022-03-28 10:58:55.715  INFO 27863 --- [  restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.56]
+   2022-03-28 10:58:55.811  INFO 27863 --- [  restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+   2022-03-28 10:58:55.811  INFO 27863 --- [  restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2248 ms
+   2022-03-28 10:58:56.218  INFO 27863 --- [  restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+   2022-03-28 10:58:56.267  INFO 27863 --- [  restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.6.4.Final
+   2022-03-28 10:58:56.433  INFO 27863 --- [  restartedMain] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+   2022-03-28 10:58:56.530  INFO 27863 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+   2022-03-28 10:58:56.641  INFO 27863 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+   2022-03-28 10:58:56.670  INFO 27863 --- [  restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL10Dialect
+   2022-03-28 10:58:57.218  WARN 27863 --- [  restartedMain] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+   2022-03-28 10:58:57.218  WARN 27863 --- [  restartedMain] o.h.engine.jdbc.spi.SqlExceptionHelper   : table "todo" does not exist, skipping
+   2022-03-28 10:58:57.221  WARN 27863 --- [  restartedMain] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+   2022-03-28 10:58:57.221  WARN 27863 --- [  restartedMain] o.h.engine.jdbc.spi.SqlExceptionHelper   : sequence "hibernate_sequence" does not exist, skipping
+   2022-03-28 10:58:57.239  INFO 27863 --- [  restartedMain] o.h.t.schema.internal.SchemaCreatorImpl  : HHH000476: Executing import script 'file:/Users/dom/Repo/todo-spring-quarkus/target/classes/import.sql'
+   2022-03-28 10:58:57.244  INFO 27863 --- [  restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+   2022-03-28 10:58:57.252  INFO 27863 --- [  restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+   2022-03-28 10:58:57.650  WARN 27863 --- [  restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+   2022-03-28 10:58:57.897  INFO 27863 --- [  restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [META-INF/resources/index.html]
+   2022-03-28 10:58:58.791  INFO 27863 --- [  restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+   2022-03-28 10:58:58.797  INFO 27863 --- [  restartedMain] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoint(s) beneath base path '/actuator'
+   2022-03-28 10:58:58.841  INFO 27863 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+   2022-03-28 10:58:58.859  INFO 27863 --- [  restartedMain] i.q.todospringquarkus.TodoApplication    : Started TodoApplication in 6.021 seconds (JVM running for 6.797)
+   ```
+
+3. Open [http://localhost:8080](http://localhost:8080) in a web browser.
+
+4. Play around with the application a bit; Add new todo lists, mark some of them completed, and open the links at the bottom of the page.
+
+5. Go back to the terminal and stop the application by pressing `Ctrl + C` on keyboard.
+
+6. Start the application again with this command.
+
+   ```sh
+   ./.mvnw clean spring-boot:run
+   ```
+
+   The application should be now start with Quarkus framework.
+
+   ```txt
+   2022-03-28 10:56:41,090 INFO  [io.qua.dat.dep.dev.DevServicesDatasourceProcessor] (build-10) Dev Services for the default datasource (postgresql) started.
+   2022-03-28 10:56:41,094 INFO  [io.qua.hib.orm.dep.HibernateOrmProcessor] (build-21) Setting quarkus.hibernate-orm.database.generation=drop-and-create to initialize Dev Services managed database
+   __  ____  __  _____   ___  __ ____  ______
+   --/ __ \/ / / / _ | / _ \/ //_/ / / / __/
+   -/ /_/ / /_/ / __ |/ , _/ ,< / /_/ /\ \
+   --\___\_\____/_/ |_/_/|_/_/|_|\____/___/
+   2022-03-28 10:56:42,761 WARN  [org.hib.eng.jdb.spi.SqlExceptionHelper] (JPA Startup Thread: <default>) SQL Warning Code: 0, SQLState: 00000
+
+   2022-03-28 10:56:42,762 WARN  [org.hib.eng.jdb.spi.SqlExceptionHelper] (JPA Startup Thread: <default>) table "todo" does not exist, skipping
+   2022-03-28 10:56:42,766 WARN  [org.hib.eng.jdb.spi.SqlExceptionHelper] (JPA Startup Thread: <default>) SQL Warning Code: 0, SQLState: 00000
+   2022-03-28 10:56:42,767 WARN  [org.hib.eng.jdb.spi.SqlExceptionHelper] (JPA Startup Thread: <default>) sequence "hibernate_sequence" does not exist, skipping
+   2022-03-28 10:56:42,996 INFO  [io.quarkus] (Quarkus Main Thread) todo-spring-quarkus 0.0.1-SNAPSHOT on JVM (powered by Quarkus 2.6.3.Final) started in 8.111s. Listening on: http://0.0.0.0:8080
+   2022-03-28 10:56:42,996 INFO  [io.quarkus] (Quarkus Main Thread) Profile dev activated. Live Coding activated.
+   2022-03-28 10:56:42,997 INFO  [io.quarkus] (Quarkus Main Thread) Installed features: [agroal, cdi, hibernate-orm, hibernate-orm-panache, jdbc-postgresql, kubernetes, micrometer, narayana-jta, resteasy-reactive, resteasy-reactive-jackson, smallrye-context-propagation, smallrye-health, smallrye-openapi, spring-data-jpa, spring-di, spring-web, swagger-ui, vertx]
+   2022-03-28 10:56:57,312 INFO  [io.quarkus] (Shutdown thread) todo-spring-quarkus stopped in 0.053s
+   ```
+
+7. Explain the magic.
+   1. Dependencies in POM file e.g. quarkus profile.
+   2. Application configuration in `src/main/resources/application.properties` (Scroll down to the bottom to see Quarkus's configs).
+
 [↩ back to top](#9-spring-boot-on-quarkus)
+
 </details>
