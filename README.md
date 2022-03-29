@@ -165,7 +165,7 @@ This demo aims to show you a comparison between Quarkus and Spring Boot applicat
       0.2898462039908183% used
    ```
 
-[↩ back to top](#1-let-me-show-you)
+[↩ back to top](#let-me-show-you)
 
 </details>
 
@@ -226,7 +226,7 @@ To demonstrate some cool features of Quarkus CLI tool that helps to improve deve
 
 10. Take a look at the shortcut and menu in the terminal. Then press `W` on keyboard to open the application URL.
 
-[↩ back to top](#2-cli-tooling)
+[↩ back to top](#cli-tooling)
 
 </details>
 
@@ -281,7 +281,7 @@ This demo aims to show the **Dev UI** feature which is a dashboard that's availa
 
 7. Open [http://localhost:8080/q/metrics](http://localhost:8080/q/metrics) to see all metrics exposed by the application.
 
-[↩ back to top](#3-dev-ui)
+[↩ back to top](#dev-ui)
 
 </details>
 
@@ -302,7 +302,7 @@ The intention of this demo is to demonstarte the **Live Coding** feature of Quar
 
 2. Make some code change i.e. returned message. Then refresh the web browser. The change will reflect immediately without restart the build.
 
-[↩ back to top](#4-live-coding)
+[↩ back to top](#live-coding)
 
 </details>
 
@@ -333,7 +333,7 @@ The intention of this demo is to show how Quarkus supports the automatic provisi
 
 5. Demo the app.
 
-[↩ back to top](#5-dev-services)
+[↩ back to top](#dev-services)
 
 </details>
 
@@ -370,7 +370,7 @@ This demo aims to show one of Quarkus's capabilities - native executable build. 
    2022-03-28 11:31:56,254 INFO  [io.quarkus] (main) Installed features: [cdi, jdbc-postgresql, kubernetes, resteasy, smallrye-context-propagation, smallrye-health, smallrye-metrics, vertx]
    ```
 
-[↩ back to top](#6-native-executable)
+[↩ back to top](#native-executable)
 
 </details>
 
@@ -443,7 +443,7 @@ This demo will show you how develpers can easily build various type of container
 
 7. Open [http://localhost:9091](http://localhost:9091) in a web browser.
 
-[↩ back to top](#7-build-container-image)
+[↩ back to top](#build-container-image)
 
 </details>
 
@@ -455,8 +455,6 @@ To demonstrate the single-step deployments Quarkus makes it easy to deploy micro
 
 <details>
 <summary>Demo Steps</summary>
-
-[↩ back to top](#8-kubernetes-native)
 
 1. Remove docker extension from the project.
 
@@ -509,6 +507,8 @@ To demonstrate the single-step deployments Quarkus makes it easy to deploy micro
    ```
 
 9. Go to OpenShift Console, **Topology** menu. Then open a application link.
+
+[↩ back to top](#kubernetes-native)
 
 </details>
 
@@ -614,6 +614,6 @@ The intention of this demo is to show how to migrate existing Spring Boot applca
    1. Dependencies in POM file e.g. quarkus profile.
    2. Application configuration in `src/main/resources/application.properties` (Scroll down to the bottom to see Quarkus's configs).
 
-[↩ back to top](#9-spring-boot-on-quarkus)
+[↩ back to top](#spring-boot-on-quarkus)
 
 </details>
