@@ -352,10 +352,16 @@ This demo aims to show one of Quarkus's capabilities - native executable build. 
    mvn clean package -DskipTests -Pnative
    ```
 
+   OR
+
+   ```sh
+   quarkus build --native
+   ```
+
 2. Run the application with native executable file in the `target` directory.
 
    ```sh
-   ./target/demo1-1.0.0-SNAPSHOT-runner
+   ./target/quarkus-demo-1.0.0-SNAPSHOT-runner
    ```
 
 3. Observe the superfast startup time in the first line of logs.
@@ -465,10 +471,10 @@ To demonstrate the single-step deployments Quarkus makes it easy to deploy micro
 2. Add OpenShift extension to the project.
 
    ```sh
-   quarkus add openshift
+   quarkus extension add openshift
    ```
 
-3. Login to OpenShift Console, hen create a new project e.g. `test`, and then grab the login command.
+3. Login to OpenShift Console, then create a new project e.g. `test`, and then grab the login command.
 
 4. Go to terminal and execute the login command.
 
